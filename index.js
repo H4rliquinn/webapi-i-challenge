@@ -1,6 +1,6 @@
 // implement your API here
 const express = require("express");
-const db = require("./data/db.js");
+const Users = require("./data/db.js");
 const server = express();
 server.use(express.json());
 
@@ -62,6 +62,24 @@ server.get("/api/users/:id", (req, res) => {
       res
         .status(500)
         .json({ errorMessage: "The user information could not be retrieved." });
+    });
+});
+
+server.delete("/api/users/:id", (req, res) => {
+  Users.remove(req.params.id)
+    .then(count => {
+      if (count && count > 0) {
+        res.status(200).json({
+          message: "the user was deleted." + count
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist." });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({ errorMessage: "The user could not be removed" });
     });
 });
 
