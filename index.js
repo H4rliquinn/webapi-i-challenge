@@ -3,6 +3,7 @@ const express = require("express");
 const db = require("./data/db.js");
 
 const server = express();
+server.use(express.json());
 
 server.get("/", (req, res) => {
   res.send("Sup! :(");
@@ -16,6 +17,12 @@ server.get("/users", (req, res) => {
     .catch(err => {
       res.status(500).send("Error: " + err);
     });
+});
+
+server.post("/api/users", (req, res) => {
+  // db.insert()
+  //   res.sendStatus(200);
+  res.status(200).json(req.body);
 });
 server.get("/hobbits", (req, res) => {
   const hobbits = [{ id: 1, name: "Samwise Gamgee" }, { id: 2, name: "Frodo" }];
